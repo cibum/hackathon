@@ -1,0 +1,20 @@
+# Bootstrap
+app/bootstrap*
+
+# Symfony directories
+vendor/*
+*/logs/*
+*/cache/*
+web/uploads/*
+web/bundles/*
+
+# Assetic directories
+web/css/*
+web/js/*
+
+# Configuration files
+app/config/parameters.ini
+app/config/parameters.yml
+
+# PhpStorm
+.idea
