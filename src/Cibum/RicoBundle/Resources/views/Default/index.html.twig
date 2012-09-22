@@ -1,1 +1,12 @@
-Hello {{ name }}!
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+    {% stylesheets
+        '@CibumRicoBundle/Resources/less/main.less'
+    %}
+    <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+    <h1>Rico y Barato</h1>
+{% endblock %}
