@@ -1,4 +1,11 @@
-var points;
+function setPoints(points){
+    $('#map').gmap3(
+	{ action: 'addMarkers',
+	  markers: points
+	}
+    );
+};
+
 
 $(function () {
     $('#map').gmap3(
@@ -11,10 +18,7 @@ $(function () {
 		navigationControl: false,
 		streetViewControl: false
             }
-        },
-	{ action: 'addMarkers',
-	  markers:[ points ]
-	}
+        }
     );
 
     $('#filter_distrito').change(function(){
