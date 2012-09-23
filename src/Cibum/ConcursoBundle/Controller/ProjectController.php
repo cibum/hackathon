@@ -5,6 +5,7 @@ namespace Cibum\ConcursoBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Cibum\ConcursoBundle\Entity\Proyecto;
 
 class ProjectController extends Controller
 {
@@ -23,6 +24,11 @@ class ProjectController extends Controller
      */
     public function showAction()
     {
-        return array();
+       $project =new Proyecto();
+       $project->setNombre("jjujujuju");
+       
+        return array('proyecto' => $project );
     }
+    
+    
 }
