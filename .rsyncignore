@@ -1,0 +1,17 @@
+*.sql
+.gitignore
+.rsyncignore
+exclude.lst
+composer.phar
+resources
+doc
+cache/*
+bin
+logs/*
+web/less
+*~
+vendor/bootstrap
+tests
+Tests
+.git
+
