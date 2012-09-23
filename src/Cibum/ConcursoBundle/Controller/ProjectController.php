@@ -82,7 +82,7 @@ class ProjectController extends Controller
         $proyecto = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Proyecto')->findOneBy(array(
             'id' => $proyecto,
         ));
-
+        /** @var Proyecto $proyecto */
         if (!$proyecto) {
             return $this->createNotFoundException();
         }
@@ -90,7 +90,9 @@ class ProjectController extends Controller
         $comment = new \Cibum\ConcursoBundle\Entity\Comment();
         $commentForm = $this->createForm(new CommentType(), $comment);
 
-        $commentForm->bindRequest($this->getRequest());
+        $request = $this->getRequest();
+        $commentForm->bindRequest($request);
+
         if ($commentForm->isValid()) {
             $user = $this->get('security.context')->getToken()->getUser();
             if ($user instanceof \Symfony\Component\Security\Core\User\UserInterface) {
@@ -100,10 +102,10 @@ class ProjectController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($comment);
                 $em->flush();
-                $this->getRequest()->getSession()->setFlash('success', 'Comentario enviado con éxito');
-                return $this->redirect('project_show', array('proyecto', $proyecto->getId()));
+                $request->getSession()->setFlash('success', 'Comentario enviado con éxito');
+                return $this->redirect($this->generateUrl('project_show', array('proyecto' => $proyecto->getId())));
             }
-            $this->getRequest()->getSession()->setFlash('warning', 'Usuario no registrado');
+            $request->getSession()->setFlash('warning', 'Usuario no registrado');
         }
 
         $comments = $this->getDoctrine()->getRepository('CibumConcursoBundle:Comment')->forProject($proyecto);
