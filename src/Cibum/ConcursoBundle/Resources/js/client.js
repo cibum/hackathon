@@ -1,3 +1,5 @@
+var points;
+
 $(function () {
     $('#map').gmap3(
         { action:'init',
