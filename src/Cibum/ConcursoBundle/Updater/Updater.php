@@ -68,9 +68,9 @@ class Updater
             $anho->setEstado($fila[13]);
             $anho->setPresupuesto((int)$fila[15]);
             $anho->setPia((int)$fila[16]);
-            $anho->setPim((int)$fila[22]);
-            $anho->setEjecucionAcumulada((float)$fila[23]);
-            $anho->setAvance((float)$fila[24]);
+            $anho->setPim((int)$fila[17]);
+            $anho->setEjecucionAcumulada((float)$fila[22]);
+            $anho->setAvance((float)$fila[23]);
 
             $distritos = explode($fila[14], ',');
 
