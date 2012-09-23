@@ -35,8 +35,12 @@ class ProjectController extends Controller
             }
         }
 
-        $proyectos = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Proyecto')
-            ->findByFilter($filter['distrito'], $filter['anho']);
+        $repo = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Proyecto');
+
+        if (isset($filter['distrito']) && isset($filter['anho']))
+            $proyectos = $repo->findByFilter($filter['distrito'], $filter['anho']);
+        else
+            $proyectos = $repo->findAll();
 
         return array(
             'proyectos' => $proyectos,

@@ -45,13 +45,11 @@
                     {% if is_granted('ROLE_USER') %}
                         <div class="btn-group pull-right">
                             <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-user"></i> Mi cuenta
+                                <i class="icon-user"></i> {{ app.user }}
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a tabindex="-1" href="#">Mis favoritos</a></li>
-                                <li class="divider"></li>
-                                <li><a tabindex="-1" href="#">Salir</a></li>
+                                <li><a tabindex="-1" href="{{ path('fos_user_security_logout') }}">Salir</a></li>
                             </ul>
                         </div>
                     {% else %}
