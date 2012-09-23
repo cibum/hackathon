@@ -47,7 +47,6 @@ class Updater
         $datavalid = array();
         $i = 0;
         $tam = count($new);
-        \Doctrine\Common\Util\Debug::dump($new);
 
         foreach ($data as $row) {
             if ($i === $tam)
@@ -58,6 +57,8 @@ class Updater
                 $i++;
             }
         }
+
+        $updates = 0;
 
         foreach ($datavalid as $fila) {
 
@@ -70,6 +71,8 @@ class Updater
                 $project->setSiaf($fila[12]);
                 $project->setLatitud($fila[26]);
                 $project->setLongitud($fila[27]);
+
+                $updates++;
             }
 
             $anho = new Anual();
@@ -80,6 +83,7 @@ class Updater
             $anho->setPim((int)$fila[17]);
             $anho->setEjecucionAcumulada((float)$fila[22]);
             $anho->setAvance((float)$fila[23]);
+            $updates++;
 
             $distritos = explode($fila[14], ',');
 
@@ -90,6 +94,7 @@ class Updater
                     $distrito = new Distrito();
                     $distrito->setNombre($distNombre);
                     $this->em->persist($distrito);
+                    $updates++;
                 }
                 $anho->addDistrito($distrito);
             }
@@ -100,6 +105,7 @@ class Updater
             $this->em->flush();
         }
 
+        return $updates;
     }
 
     public function updateOne($project)
