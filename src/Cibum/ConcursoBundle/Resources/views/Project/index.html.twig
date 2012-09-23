@@ -2,15 +2,12 @@
 
 {% block content %}
 
-<script type="text/javascript">
-  var points = {{ proyectos |json_encode |raw }};
-</script>
 
     <div class="span3">
-      <div class="alert alert-info">
-        <strong>Importante:</strong> Los datos están
-	actualizados a agosto 2012.
-      </div>
+        <div class="alert alert-info">
+            <strong>Importante:</strong> Los datos están
+            actualizados a agosto 2012.
+        </div>
 
         <form action="{{ path('homepage') }}" method="post">
             {{ form_widget(filter) }}
@@ -19,8 +16,27 @@
     </div>
 
     <div class="span9">
-        <div id="map" style="width: 800px; height: 500px;"> </div>
+        <div id="map" style="width: 800px; height: 500px;"></div>
     </div>
 
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function () {
+            var data = {{ proyectos |json_encode |raw }};
+            var points = new Array();
+            $.each(data, function (i, prj) {
+                /*
+                 points.push({
+                 lat:prj.latitud,
+                 lng:prj.longitud,
+                 data:'<h3>' + prj.nombre + '</h3>'
+                 });
+                 */
+            });
+        });
+    </script>
+
+{% endblock %}
