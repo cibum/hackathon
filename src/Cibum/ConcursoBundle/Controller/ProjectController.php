@@ -24,11 +24,14 @@ class ProjectController extends Controller
      */
     public function showAction()
     {
-       $project =new Proyecto();
-       $project->setNombre("jjujujuju");
-       
-        return array('proyecto' => $project );
+        $project = new Proyecto();
+        $project->setNombre("Metropolitano");
+        $project->setDescripcion("Corredor Vial");
+        $project->setSnip("1234");
+        $project->setSiaf("23213");
+
+        return array('proyecto' => $project);
     }
-    
-    
+
+
 }
