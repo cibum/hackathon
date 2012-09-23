@@ -15,7 +15,7 @@ class DefaultController extends Controller
     public function indexAction($name)
     {
         $updater = $this->get('cibum.updater');
-        $updater->update();
+        $updater->batchUpdate();
 
         return array('name' => $name);
     }

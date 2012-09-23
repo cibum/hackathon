@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use Cibum\ConcursoBundle\Entity\Proyecto;
 use Cibum\ConcursoBundle\Entity\ProyectoRepository;
 use Cibum\ConcursoBundle\Entity\Anual;
+use Socrata;
 
 class Updater
 {
@@ -18,18 +19,37 @@ class Updater
 
     public function batchUpdate()
     {
-        $socrata = new Socrata('https://opendata.socrata.com/api', 'h3ut-rsd9');
+        $socrata = new Socrata('https://opendata.socrata.com/api');
 
         //pull data
-        $data = array();
+        $data = $socrata->get('/views/h3ut-rsd9/rows.json', array('meta' => 'false'))['data'];
+
+        $datasimple = array();
+        foreach ($data as $row) {
+            if ($row[11] != "")
+                $datasimple[] = $row[8] . ':' . $row[11];
+        }
 
         /** @var $repo ProyectoRepository */
         $repo = $this->em->getRepository('CibumConcursoBundle:Proyecto');
 
-        $snips = $repo->getAllSnips();
-        $new = array_diff($data, $snips);
+        $actualproj = $repo->getAllQuick();
+        $new = array_diff($datasimple, $actualproj);
 
-        foreach($new as $each) {
+        $datavalid = array();
+        $i = 0;
+        foreach ($data as $row) {
+            $pair = $row[8] . ':' . $row[11];
+            if ($pair === $new[$i]) {
+                $datavalid[] = $row;
+                $i++;
+            }
+        }
+
+        //\Doctrine\Common\Util\Debug::dump($datavalid, 5);
+        //die;
+
+        foreach ($new as $each) {
             // obtener cada proyecto
             $fila = array();
 
@@ -39,7 +59,7 @@ class Updater
             $proyecto->setSnip($fila[0]->getSnip());
 
 
-            foreach($fila as $anual) {
+            foreach ($fila as $anual) {
                 $anho = new Anual();
                 $anho->setAnho($anual->getAnho());
                 $anho->setAvance($anual->getAvance());
