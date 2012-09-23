@@ -42,14 +42,19 @@ class ProyectoRepository extends EntityRepository
         }, $ans);
     }
 
-    public function findByFilter(Distrito $distrito, $anho)
+    public function findByFilter(Distrito $distrito = null, $anho)
     {
-        return $this->getEntityManager()
-            ->createQuery('SELECT p.id, p.nombre, p.latitud, p.longitud FROM CibumConcursoBundle:Anual a JOIN a.proyecto p WHERE :distrito MEMBER OF a.distritos AND a.anho = :anho')
-            ->setParameters(array(
-            'anho' => $anho,
-            'distrito' => $distrito,
-        ))->getArrayResult();
+        $qb = $this->createQueryBuilder('p1');
+        $qb->select('p.id, p.nombre, p.latitud, p.longitud')
+            ->from('CibumConcursoBundle:Anual', 'a')
+            ->join('a.proyecto', 'p')
+            ->where('a.anho = :anho')
+            ->setParameter('anho', $anho);
+        if ($distrito) {
+            $qb->andWhere(':distrito MEMBER OF a.distritos')
+                ->setParameter('distrito', $distrito);
+        }
+        return $qb->getQuery()->getArrayResult();
     }
 
     public function getBySnips($snips)
