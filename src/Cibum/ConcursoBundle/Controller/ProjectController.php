@@ -22,17 +22,20 @@ class ProjectController extends Controller
 
         $filter_form = $this->createForm(new FilterForm(), $filter);
 
-        $filter_form->bindRequest($request);
+        if ($request->getMethod() === 'POST') {
+            $filter_form->bindRequest($request);
 
-        if ($filter_form->isValid()) {
-            $session->set('project_filter', $filter);
+            if ($filter_form->isValid()) {
+                $filter = $filter_form->getData();
+                $session->set('project_filter', $filter);
+            }
         }
 
         $proyectos = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Proyecto')->findByFilter($filter);
 
         return array(
             'proyectos' => $proyectos,
-            'filter'    => $filter_form->createView(),
+            'filter' => $filter_form->createView(),
         );
     }
 

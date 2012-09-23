@@ -42,14 +42,27 @@ class ProyectoRepository extends EntityRepository
     }
 
     public function findByFilter(array $criteria)
-	{
-	}
+    {
+        $qb = $this->createQueryBuilder('p');
+        if ($criteria) {
+            !isset($criteria['distrito']) ? : $qb
+                ->join('p.anuales', 'a')
+                ->join('a.distritos', 'd')
+                ->where('d.id = :distrito')
+                ->setParameter('distrito', $criteria['distrito']);
+            !isset($criteria['anho']) ? : $qb
+                ->join('p.anuales', 'a')
+                ->where('a.anho = :anho')
+                ->setParameter('anho', $criteria['anho']);
+        }
+        return $qb->getQuery()->getResult();
+    }
 
     public function getBySnips($snips)
     {
         return $this->getEntityManager()->createQuery('SELECT p FROM CibumConcursoBundle:Proyecto p WHERE p.snip IN :snips')
-        ->setParameter('snips', $snips)
-        ->getResult();
+            ->setParameter('snips', $snips)
+            ->getResult();
     }
 
 }
