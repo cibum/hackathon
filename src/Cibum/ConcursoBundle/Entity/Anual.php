@@ -57,7 +57,6 @@ class Anual
      */
     private $presupuesto;
 
-
     /**
      * @var integer $pia
      *
@@ -82,7 +81,7 @@ class Anual
     /**
      * @var integer $avance
      *
-     * @ORM\Column(name="avance", type="integer")
+     * @ORM\Column(name="avance", type="float")
      */
     private $avance;
 
@@ -266,7 +265,7 @@ class Anual
     /**
      * Set avance
      *
-     * @param integer $avance
+     * @param float $avance
      */
     public function setAvance($avance)
     {
@@ -276,7 +275,7 @@ class Anual
     /**
      * Get avance
      *
-     * @return integer
+     * @return float
      */
     public function getAvance()
     {
