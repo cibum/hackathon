@@ -44,17 +44,18 @@ class ProyectoRepository extends EntityRepository
 
     public function findByFilter(Distrito $distrito = null, $anho)
     {
-        $qb = $this->createQueryBuilder('p1');
-        $qb->select('p.id, p.nombre, p.latitud, p.longitud')
-            ->from('CibumConcursoBundle:Anual', 'a')
-            ->join('a.proyecto', 'p')
-            ->where('a.anho = :anho')
-            ->setParameter('anho', $anho);
-        if ($distrito) {
-            $qb->andWhere(':distrito MEMBER OF a.distritos')
-                ->setParameter('distrito', $distrito);
+        $query = 'SELECT p.id, p.nombre, p.latitud, p.longitud FROM CibumConcursoBundle:Anual a JOIN a.proyecto p WHERE a.anho = :anho';
+
+        if ($distrito !== null) {
+            $query .= ' AND :distrito MEMBER OF a.distritos';
         }
-        return $qb->getQuery()->getArrayResult();
+        $q = $this->getEntityManager()->createQuery($query)
+            ->setParameter('anho', $anho);
+        if ($distrito !== null) {
+            $q->setParameter('distrito', $distrito);
+        }
+
+        return $q->getArrayResult();
     }
 
     public function getBySnips($snips)
