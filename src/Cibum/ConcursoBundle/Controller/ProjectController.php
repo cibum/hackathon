@@ -18,7 +18,8 @@ class ProjectController extends Controller
         $request = $this->getRequest();
         $session = $request->getSession();
 
-        $filter = $session->get('project_filter', array());
+//        $filter = $session->get('project_filter', array());
+        $filter = array();
 
         $filter_form = $this->createForm(new FilterForm(), $filter);
 

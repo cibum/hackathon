@@ -45,14 +45,13 @@ class ProyectoRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('p');
         if ($criteria) {
+            $qb->join('p.anuales', 'a');
             !isset($criteria['distrito']) ? : $qb
-                ->join('p.anuales', 'a')
                 ->join('a.distritos', 'd')
                 ->where('d.id = :distrito')
                 ->setParameter('distrito', $criteria['distrito']);
             !isset($criteria['anho']) ? : $qb
-                ->join('p.anuales', 'a')
-                ->where('a.anho = :anho')
+                ->andWhere('a.anho = :anho')
                 ->setParameter('anho', $criteria['anho']);
         }
         return $qb->getQuery()->getResult();
