@@ -1,3 +1,8 @@
 body {
     margin-top: 50px;
 }
+
+.team dt {
+    font-size: 1.4em;
+    line-height: 1.7em;
+}
