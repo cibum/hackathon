@@ -3,17 +3,16 @@
 namespace Cibum\ConcursoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Cibum\ConcursoBundle\Entity\Usuario;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Cibum\ConcursoBundle\Entity\Vote
+ * Cibum\ConcursoBundle\Entity\Comment
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Cibum\ConcursoBundle\Entity\VoteRepository")
- * @ORM\Table(name="vote",uniqueConstraints={@ORM\UniqueConstraint(name="vote_idx", columns={"user_id", "project_id"})})
+ * @ORM\Entity(repositoryClass="Cibum\ConcursoBundle\Entity\CommentRepository")
  */
-class Vote
+class Comment
 {
     /**
      * @var integer $id
@@ -27,23 +26,37 @@ class Vote
     /**
      * @var Usuario $user
      *
-     * @ORM\OneToOne(targetEntity="Cibum\ConcursoBundle\Entity\Usuario")
+     * @ORM\ManyToOne(targetEntity="Usuario")
      */
     private $user;
 
     /**
-     * @var Proyecto $project
+     * @var string $project
      *
-     * @ORM\OneToOne(targetEntity="Cibum\ConcursoBundle\Entity\Proyecto")
+     * @ORM\ManyToOne(targetEntity="Proyecto", inversedBy="comments")
      */
     private $project;
 
     /**
-     * @var boolean $vote
+     * @var \DateTime $created
      *
-     * @ORM\Column(name="vote", type="boolean")
+     * @ORM\Column(name="created", type="datetime")
      */
-    private $vote;
+    private $created;
+
+    /**
+     * @var string $content
+     *
+     * @ORM\Column(name="content", type="text")
+     * @Assert\NotBlank
+     *
+     */
+    private $content;
+
+    function __construct()
+    {
+        $this->created = new \DateTime();
+    }
 
     /**
      * Get id
@@ -96,22 +109,42 @@ class Vote
     }
 
     /**
-     * Set vote
+     * Set created
      *
-     * @param boolean $vote
+     * @param \DateTime $created
      */
-    public function setVote($vote)
+    public function setCreated($created)
     {
-        $this->vote = $vote;
+        $this->created = $created;
     }
 
     /**
-     * Get vote
+     * Get created
      *
-     * @return boolean 
+     * @return \DateTime
      */
-    public function getVote()
+    public function getCreated()
     {
-        return $this->vote;
+        return $this->created;
+    }
+
+    /**
+     * Set content
+     *
+     * @param string $content
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * Get content
+     *
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 }

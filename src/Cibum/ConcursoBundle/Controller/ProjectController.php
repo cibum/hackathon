@@ -9,6 +9,8 @@ use Cibum\ConcursoBundle\Form\FilterForm;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Cibum\ConcursoBundle\Entity\Vote;
+use Cibum\ConcursoBundle\Entity\Comment;
+use Cibum\ConcursoBundle\Form\CommentType;
 
 class ProjectController extends Controller
 {
@@ -52,38 +54,112 @@ class ProjectController extends Controller
             'id' => $proyecto,
         ));
 
-        if (!$proyecto)
+        if (!$proyecto) {
             return $this->createNotFoundException();
+        }
 
-        return array('proyecto' => $proyecto);
+        $comment = new \Cibum\ConcursoBundle\Entity\Comment();
+        $commentForm = $this->createForm(new CommentType(), $comment);
+
+        $comments = $this->getDoctrine()->getRepository('CibumConcursoBundle:Comment')->forProject($proyecto);
+
+        $votesrepo = $this->getDoctrine()->getRepository('CibumConcursoBundle:Vote');
+        $tsup = $votesrepo->getVotes($proyecto, true);
+        $tsdown = $votesrepo->getVotes($proyecto, false);
+        if ($tsup + $tsdown) {
+            $perup = (int)(100 * $tsup / ($tsup + $tsdown));
+            $perdown = 100 - $perup;
+        } else
+            $perup = $perdown = 0;
+
+        return array(
+            'proyecto' => $proyecto,
+            'comments' => $comments,
+            'commentForm' => $commentForm->createView(),
+            'tsup' => $tsup,
+            'tsdown' => $tsdown,
+            'perup' => $perup,
+            'perdown' => $perdown
+        );
     }
 
     /**
-     * @Route("/vote/", name="project_vote")
+     * @Route("/project/{proyecto}/comment", name="project_comment")
+     * @Template("CibumConcursoBundle:Project:show.html.twig")
+     * @Method("POST")
+     */
+    public function commentAction($proyecto)
+    {
+        $proyecto = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Proyecto')->findOneBy(array(
+            'id' => $proyecto,
+        ));
+        /** @var Proyecto $proyecto */
+        if (!$proyecto) {
+            return $this->createNotFoundException();
+        }
+
+        $comment = new \Cibum\ConcursoBundle\Entity\Comment();
+        $commentForm = $this->createForm(new CommentType(), $comment);
+
+        $request = $this->getRequest();
+        $commentForm->bindRequest($request);
+
+        if ($commentForm->isValid()) {
+            $user = $this->get('security.context')->getToken()->getUser();
+            if ($user instanceof \Symfony\Component\Security\Core\User\UserInterface) {
+                $comment->setUser($user);
+                $comment->setProject($proyecto);
+
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($comment);
+                $em->flush();
+                $request->getSession()->setFlash('success', 'Comentario enviado con éxito');
+                return $this->redirect($this->generateUrl('project_show', array('proyecto' => $proyecto->getId())));
+            }
+            $request->getSession()->setFlash('warning', 'Usuario no registrado');
+        }
+
+        $comments = $this->getDoctrine()->getRepository('CibumConcursoBundle:Comment')->forProject($proyecto);
+
+        return array(
+            'proyecto' => $proyecto,
+            'comments' => $comments,
+            'commentForm' => $commentForm->createView(),
+        );
+    }
+
+    /**
+     * @Route("/vote", name="project_vote")
      * @Method("POST")
      */
     public function voteAction()
     {
         $request = $this->get('request');
         $proyecto = $request->request->get('project');
-        $vote = (int)$request->request->get('vote');
+        $votevar = $request->request->get('vote');
+        ;
         $proyecto = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Proyecto')->findOneBy(array(
-            'id' => $proyecto
+            'snip' => $proyecto
         ));
         if (!$proyecto)
             return $this->createNotFoundException();
 
         $user = $this->get("security.context")->getToken()->getUser();
-        if($user instanceof \Symfony\Component\Security\Core\User\UserInterface) {
-            $vote = new Vote();
-            $vote->setUser($user);
-            $vote->setProject($proyecto);
-            $vote->setVote((bool) $vote);
+
+        if ($user instanceof \Symfony\Component\Security\Core\User\UserInterface) {
+            $em = $this->getDoctrine()->getEntityManager();
+            $vote = $this->getDoctrine()->getRepository('CibumConcursoBundle:Vote')->getVote($user, $proyecto);
+
+            if (!$vote) {
+                $vote = new Vote();
+                $vote->setUser($user);
+                $vote->setProject($proyecto);
+            }
+            $vote->setVote(!!$votevar);
+            $em->persist($vote);
+            $em->flush();
+            return new Response('Éxito', 200);
         }
-        else
-            return new Response('Debe iniciar sesión para votar', '401');
-
+        return new Response('Debe iniciar sesión para votar', 401);
     }
-
-
 }

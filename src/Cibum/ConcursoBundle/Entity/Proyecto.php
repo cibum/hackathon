@@ -70,9 +70,17 @@ class Proyecto
      */
     protected $anuales;
 
+    /**
+     * @var Comment[] $comments
+     *
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="proyecto")
+     */
+    protected $comments;
+
     function __construct()
     {
         $this->anuales = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**

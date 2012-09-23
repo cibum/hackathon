@@ -15,26 +15,26 @@
                         <dt>Descripción</dt>
                         <dd>{{ proyecto.descripcion }}</dd>
                         <dt>Código SNIP</dt>
-                        <dd>{{ proyecto.snip }}</dd>
+                        <dd id="snip">{{ proyecto.snip }}</dd>
                         <dt>Código SIAF</dt>
                         <dd>{{ proyecto.siaf }}</dd>
                     </dl>
                 </div>
                 <div class="span4">
                     <div class="progress">
-                        <div class="bar bar-success" style="width: {{ 45 }}%;"></div>
-                        <div class="bar bar-danger" style="width: {{ 55 }}%;"></div>
+                        <div class="bar bar-success" style="width: {{ perup }}%;"></div>
+                        <div class="bar bar-danger" style="width: {{ perdown }}%;"></div>
                     </div>
-                    {{ 10 }} me gusta, {{ 16 }} no me gusta
+                    {{ tsup }} me gusta, {{ tsdown }} no me gusta
                 </div>
             </div>
             <div class="row-fluid">
                 <div class="span3">
-                    <div class="btn-group">
-                        <button type="button" class="btn">
+                    <div class="btn-group" id="vote-btns">
+                        <button data-vote="1" type="button" class="btn" data-url="{{ url('project_vote') }}">
                             <img src="/bundles/cibumconcurso/img/thumbsup.png" width="32px"/>
                         </button>
-                        <button type="button" class="btn">
+                        <button data-vote="0" type="button" class="btn" data-url="{{ url('project_vote') }}">
                             <img src="/bundles/cibumconcurso/img/thumbsdown.png" width="32px"/>
                         </button>
                     </div>
@@ -44,7 +44,20 @@
                 </div>
             </div>
         </div>
-        <div class="span5">Comentarios</div>
+        <div class="span5">
+            {% if is_granted('ROLE_USER') %}
+            <h2>Envia un comentario</h2>
+            <form action="{{ path('project_comment', {proyecto:proyecto.id}) }}" method="post" {{ form_enctype(commentForm) }}>
+                {{ form_widget(commentForm) }}
+                <p>
+                    <button class="btn" type="submit">Enviar</button>
+                </p>
+            </form>
+            {%  endif %}
+            <div>
+                {% include 'CibumConcursoBundle:Comments:thread.html.twig' %}
+            </div>
+        </div>
     </div>
 
 {% endblock %}
