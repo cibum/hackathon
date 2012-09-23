@@ -43,7 +43,7 @@ class ProjectController extends Controller
             $proyectos = $repo->findAll();
 
         return array(
-            'proyectos' => $proyectos,
+            'proyectos' => json_encode($proyectos),
             'filter' => $filter_form->createView(),
         );
     }
