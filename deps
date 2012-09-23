@@ -84,5 +84,5 @@
     version=v0.3.8
 
 [socrata]
-    git=https://github.com/socrata/socrata-php.git
+    git=https://github.com/charlieman/socrata-php
     target=socrata
