@@ -9,7 +9,10 @@ $(function () {
 		navigationControl: false,
 		streetViewControl: false
             }
-        }
+        },
+	{ action: 'addMarkers',
+	  markers:[ points ]
+	}
     );
 
     $('#filter_distrito').change(function(){
@@ -28,7 +31,7 @@ $(function () {
 		    if(result){
 			$(this).gmap3({
 			    action: 'setCenter',
-			    zoom: 14,
+			    zoom: 17,
 			    args: [ result[0].geometry.location ]
 			});
 		    } else {
