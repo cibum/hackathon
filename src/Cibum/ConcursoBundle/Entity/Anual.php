@@ -167,8 +167,14 @@ class Anual
         $this->distritos = $distritos;
     }
 
+    /**
+     * Add the district to the anual
+     *
+     * @param Distrito $distrito
+     */
     public function addDistrito(Distrito $distrito)
     {
+        $distrito->addAnual($this);
         $this->distritos[] = $distrito;
     }
 

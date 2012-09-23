@@ -26,6 +26,9 @@ devusers:
 	php app/console fos:user:promote admin ROLE_ADMIN
 	php app/console fos:user:create user user@localhost user
 
+projects:
+	php app/console cibum:update
+
 fixtures:
 	php app/console doctrine:fixtures:load --env=$(ENV)
 

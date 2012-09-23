@@ -2,20 +2,49 @@
 
 {% block content %}
 
-    
-    <div class="span12">
-        <h2> {{proyecto.nombre}}</h2>
-        <div class="span10">
-        {% include 'CibumConcursoBundle:Project:buttons.html.twig'%}
-                
-                cometaros
-                
-        </div>
-        <div class="span2"></div>
-        
-      
 
-    
+
+    <h2> {{ proyecto.nombre }}</h2>
+
+
+    <div class="row-fluid">
+        <div class="span7">
+            <div class="row-fluid">
+                <div class="span8">
+                    <dl id="info">
+                        <dt>Descripción</dt>
+                        <dd>{{ proyecto.descripcion }}</dd>
+                        <dt>Código SNIP</dt>
+                        <dd>{{ proyecto.snip }}</dd>
+                        <dt>Código SIAF</dt>
+                        <dd>{{ proyecto.siaf }}</dd>
+                    </dl>
+                </div>
+                <div class="span4">
+                    <div class="progress">
+                        <div class="bar bar-success" style="width: {{ 45 }}%;"></div>
+                        <div class="bar bar-danger" style="width: {{ 55 }}%;"></div>
+                    </div>
+                    {{ 10 }} me gusta, {{ 16 }} no me gusta
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    {% include 'CibumConcursoBundle:Project:buttons.html.twig' %}
+                    <div class="span5">
+                        <button type="button" class="span12 btn btn-large btn-block">
+                            <img src="/bundles/cibumconcurso/img/thumbsup.png"/>
+                        </button>
+                    </div>
+                    <div class="span5">
+                        <button type="button" class="span12 btn btn-large btn-block">
+                            <img src="/bundles/cibumconcurso/img/thumbsdown.png"/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span5">Comentarios</div>
     </div>
 
 {% endblock %}
