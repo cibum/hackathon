@@ -12,4 +12,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProyectoRepository extends EntityRepository
 {
+
+    public function findNew(array $list)
+    {
+        return $this->_em->createQuery('SELECT p FROM CibumConcursoBundle:Proyecto WHERE p.id IN :list')
+            ->setParameter('list', $list)
+            ->getResult();
+    }
 }

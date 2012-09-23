@@ -3,6 +3,7 @@
 namespace Cibum\ConcursoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Cibum\ConcursoBundle\Entity\Proyecto
@@ -20,13 +21,6 @@ class Proyecto
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var string $anho
-     *
-     * @ORM\Column(name="anho", type="string", length=4)
-     */
-    private $anho;
 
     /**
      * @var string $nombre
@@ -55,56 +49,6 @@ class Proyecto
      * @ORM\Column(name="siaf", type="string", length=10)
      */
     private $siaf;
-
-    /**
-     * @var integer $estado
-     *
-     * @ORM\Column(name="estado", type="integer")
-     */
-    private $estado;
-
-    /**
-     * @var string $distrito
-     *
-     * @ORM\Column(name="distrito", type="string", length=255)
-     */
-    private $distrito;
-
-    /**
-     * @var integer $presupuesto
-     *
-     * @ORM\Column(name="presupuesto", type="integer")
-     */
-    private $presupuesto;
-
-    /**
-     * @var integer $pia
-     *
-     * @ORM\Column(name="pia", type="integer")
-     */
-    private $pia;
-
-    /**
-     * @var integer $pim
-     *
-     * @ORM\Column(name="pim", type="integer")
-     */
-    private $pim;
-
-    /**
-     * @var integer $ejecucion_acumulada
-     *
-     * @ORM\Column(name="ejecucion_acumulada", type="integer")
-     */
-    private $ejecucion_acumulada;
-
-    /**
-     * @var integer $avance
-     *
-     * @ORM\Column(name="avance", type="integer")
-     */
-    private $avance;
-
     /**
      * @var string $latitud
      *
@@ -119,6 +63,17 @@ class Proyecto
      */
     private $longitud;
 
+    /**
+     * @var Anual[] $anual
+     *
+     * @ORM\OneToMany(targetEntity="Anual", mappedBy="proyecto")
+     */
+    protected $anuales;
+
+    function __construct()
+    {
+        $this->anuales = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -128,26 +83,6 @@ class Proyecto
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set anho
-     *
-     * @param string $anho
-     */
-    public function setAnho($anho)
-    {
-        $this->anho = $anho;
-    }
-
-    /**
-     * Get anho
-     *
-     * @return string 
-     */
-    public function getAnho()
-    {
-        return $this->anho;
     }
 
     /**
@@ -231,146 +166,6 @@ class Proyecto
     }
 
     /**
-     * Set estado
-     *
-     * @param integer $estado
-     */
-    public function setEstado($estado)
-    {
-        $this->estado = $estado;
-    }
-
-    /**
-     * Get estado
-     *
-     * @return integer 
-     */
-    public function getEstado()
-    {
-        return $this->estado;
-    }
-
-    /**
-     * Set distrito
-     *
-     * @param string $distrito
-     */
-    public function setDistrito($distrito)
-    {
-        $this->distrito = $distrito;
-    }
-
-    /**
-     * Get distrito
-     *
-     * @return string 
-     */
-    public function getDistrito()
-    {
-        return $this->distrito;
-    }
-
-    /**
-     * Set presupuesto
-     *
-     * @param integer $presupuesto
-     */
-    public function setPresupuesto($presupuesto)
-    {
-        $this->presupuesto = $presupuesto;
-    }
-
-    /**
-     * Get presupuesto
-     *
-     * @return integer 
-     */
-    public function getPresupuesto()
-    {
-        return $this->presupuesto;
-    }
-
-    /**
-     * Set pia
-     *
-     * @param integer $pia
-     */
-    public function setPia($pia)
-    {
-        $this->pia = $pia;
-    }
-
-    /**
-     * Get pia
-     *
-     * @return integer 
-     */
-    public function getPia()
-    {
-        return $this->pia;
-    }
-
-    /**
-     * Set pim
-     *
-     * @param integer $pim
-     */
-    public function setPim($pim)
-    {
-        $this->pim = $pim;
-    }
-
-    /**
-     * Get pim
-     *
-     * @return integer 
-     */
-    public function getPim()
-    {
-        return $this->pim;
-    }
-
-    /**
-     * Set ejecucion_acumulada
-     *
-     * @param integer $ejecucionAcumulada
-     */
-    public function setEjecucionAcumulada($ejecucionAcumulada)
-    {
-        $this->ejecucion_acumulada = $ejecucionAcumulada;
-    }
-
-    /**
-     * Get ejecucion_acumulada
-     *
-     * @return integer 
-     */
-    public function getEjecucionAcumulada()
-    {
-        return $this->ejecucion_acumulada;
-    }
-
-    /**
-     * Set avance
-     *
-     * @param integer $avance
-     */
-    public function setAvance($avance)
-    {
-        $this->avance = $avance;
-    }
-
-    /**
-     * Get avance
-     *
-     * @return integer 
-     */
-    public function getAvance()
-    {
-        return $this->avance;
-    }
-
-    /**
      * Set latitud
      *
      * @param string $latitud
@@ -409,4 +204,27 @@ class Proyecto
     {
         return $this->longitud;
     }
+
+    /**
+     * @param \Cibum\ConcursoBundle\Entity\Anual[] $anuales
+     */
+    public function setAnuales($anuales)
+    {
+        $this->anuales = $anuales;
+    }
+
+    public function addAnual(Anual $anual)
+    {
+        $this->anuales[] = $anual;
+    }
+
+    /**
+     * @return \Cibum\ConcursoBundle\Entity\Anual
+     */
+    public function getAnuales()
+    {
+        return $this->anuales;
+    }
+
+
 }
