@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Cibum\ConcursoBundle\Entity\VoteRepository")
+ * @ORM\Table(name="vote",uniqueConstraints={@ORM\UniqueConstraint(name="vote_idx", columns={"user", "project"})})
  */
 class Vote
 {
@@ -22,16 +23,16 @@ class Vote
     private $id;
 
     /**
-     * @var string $user
+     * @var Usuario $user
      *
-     * @ORM\Column(name="user", type="string", length=255)
+     * @ORM\OneToOne(targetEntity="Cibum\ConcursoBundle\Entity\Usuario")
      */
     private $user;
 
     /**
-     * @var string $project
+     * @var Proyecto $project
      *
-     * @ORM\Column(name="project", type="string", length=255)
+     * @ORM\OneToOne(targetEntity="Cibum\ConcursoBundle\Entity\Proyecto")
      */
     private $project;
 
@@ -41,7 +42,6 @@ class Vote
      * @ORM\Column(name="vote", type="boolean")
      */
     private $vote;
-
 
     /**
      * Get id

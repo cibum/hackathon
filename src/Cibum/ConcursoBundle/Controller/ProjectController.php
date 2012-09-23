@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Cibum\ConcursoBundle\Form\FilterForm;
+use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Cibum\ConcursoBundle\Entity\Vote;
 
 class ProjectController extends Controller
 {
@@ -54,6 +57,33 @@ class ProjectController extends Controller
             return $this->createNotFoundException();
 
         return array('proyecto' => $proyecto);
+    }
+
+    /**
+     * @Route("/vote/", name="project_vote")
+     * @Method("POST")
+     */
+    public function voteAction()
+    {
+        $request = $this->get('request');
+        $proyecto = $request->request->get('project');
+        $vote = (int)$request->request->get('vote');
+        $proyecto = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Proyecto')->findOneBy(array(
+            'id' => $proyecto
+        ));
+        if (!$proyecto)
+            return $this->createNotFoundException();
+
+        $user = $this->get("security.context")->getToken()->getUser();
+        if($user instanceof \Symfony\Component\Security\Core\User\UserInterface) {
+            $vote = new Vote();
+            $vote->setUser($user);
+            $vote->setProject($proyecto);
+            $vote->setVote((bool) $vote);
+        }
+        else
+            return new Response('Debe iniciar sesión para votar', '401');
+
     }
 
 
