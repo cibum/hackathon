@@ -1,0 +1,9 @@
+parameters:
+    cibum.updater.class: Cibum\Updater\Updater
+
+services:
+    cibum.updater:
+        class: %cibum.updater.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+
