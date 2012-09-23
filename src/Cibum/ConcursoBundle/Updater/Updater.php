@@ -70,6 +70,7 @@ class Updater
             $anho->setPia((int)$fila[16]);
             $anho->setPim((int)$fila[22]);
             $anho->setEjecucionAcumulada((float)$fila[23]);
+            $anho->setAvance((float)$fila[24]);
 
             $distritos = explode($fila[14], ',');
 
