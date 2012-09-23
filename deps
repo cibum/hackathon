@@ -77,7 +77,7 @@
 
 [bootstrap]
     git=https://github.com/twitter/bootstrap.git
-    version=v2.1.0
+    version=v2.0.0
 
 [lessphp]
     git=https://github.com/leafo/lessphp.git
