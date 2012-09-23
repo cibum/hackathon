@@ -38,7 +38,7 @@ class Anual
     /**
      * @var integer $estado
      *
-     * @ORM\Column(name="estado", type="integer")
+     * @ORM\Column(name="estado", type="string", length=30)
      */
     private $estado;
 
@@ -141,7 +141,7 @@ class Anual
     /**
      * Set estado
      *
-     * @param integer $estado
+     * @param string $estado
      */
     public function setEstado($estado)
     {
