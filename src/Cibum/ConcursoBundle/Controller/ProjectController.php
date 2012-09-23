@@ -118,31 +118,37 @@ class ProjectController extends Controller
     }
 
     /**
-     * @Route("/vote/", name="project_vote")
+     * @Route("/vote", name="project_vote")
      * @Method("POST")
      */
     public function voteAction()
     {
         $request = $this->get('request');
         $proyecto = $request->request->get('project');
-        $vote = (int)$request->request->get('vote');
+        $votevar = $request->request->get('vote');
+        ;
         $proyecto = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Proyecto')->findOneBy(array(
-            'id' => $proyecto
+            'snip' => $proyecto
         ));
         if (!$proyecto)
             return $this->createNotFoundException();
 
         $user = $this->get("security.context")->getToken()->getUser();
-        if($user instanceof \Symfony\Component\Security\Core\User\UserInterface) {
-            $vote = new Vote();
-            $vote->setUser($user);
-            $vote->setProject($proyecto);
-            $vote->setVote((bool) $vote);
+
+        if ($user instanceof \Symfony\Component\Security\Core\User\UserInterface) {
+            $em = $this->getDoctrine()->getEntityManager();
+            $vote = $this->getDoctrine()->getRepository('CibumConcursoBundle:Vote')->getVote($user, $proyecto);
+
+            if (!$vote) {
+                $vote = new Vote();
+                $vote->setUser($user);
+                $vote->setProject($proyecto);
+            }
+            $vote->setVote(!!$votevar);
+            $em->persist($vote);
+            $em->flush();
+            return new Response('Éxito', 200);
         }
-        else
-            return new Response('Debe iniciar sesión para votar', '401');
-
+        return new Response('Debe iniciar sesión para votar', 401);
     }
-
-
 }

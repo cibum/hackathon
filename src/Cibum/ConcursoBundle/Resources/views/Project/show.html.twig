@@ -15,7 +15,7 @@
                         <dt>Descripción</dt>
                         <dd>{{ proyecto.descripcion }}</dd>
                         <dt>Código SNIP</dt>
-                        <dd>{{ proyecto.snip }}</dd>
+                        <dd id="snip">{{ proyecto.snip }}</dd>
                         <dt>Código SIAF</dt>
                         <dd>{{ proyecto.siaf }}</dd>
                     </dl>
@@ -30,11 +30,11 @@
             </div>
             <div class="row-fluid">
                 <div class="span3">
-                    <div class="btn-group">
-                        <button type="button" class="btn">
+                    <div class="btn-group" id="vote-btns">
+                        <button data-vote="1" type="button" class="btn" data-url="{{ url('project_vote') }}">
                             <img src="/bundles/cibumconcurso/img/thumbsup.png" width="32px"/>
                         </button>
-                        <button type="button" class="btn">
+                        <button data-vote="0" type="button" class="btn" data-url="{{ url('project_vote') }}">
                             <img src="/bundles/cibumconcurso/img/thumbsdown.png" width="32px"/>
                         </button>
                     </div>
