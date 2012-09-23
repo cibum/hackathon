@@ -74,7 +74,7 @@ class Anual
     /**
      * @var integer $ejecucion_acumulada
      *
-     * @ORM\Column(name="ejecucion_acumulada", type="integer")
+     * @ORM\Column(name="ejecucion_acumulada", type="float")
      */
     private $ejecucion_acumulada;
 
