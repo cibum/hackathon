@@ -1,9 +1,26 @@
 function setPoints(points){
     $('#map').gmap3(
 	{ action: 'addMarkers',
-	  markers: points
+	  markers: points, 
+	  marker:{
+	      options:{
+		  draggable: false
+	      },
+	      events:{
+		  click: function(marker, event, data){
+		      var map = $(this).gmap3('get'),
+		      infowindow = $(this).gmap3({action:'get', name:'infowindow'});
+		      if (infowindow){
+			  infowindow.open(map, marker);
+			  infowindow.setContent(data);
+		      } else {
+			  $(this).gmap3({action:'addinfowindow', anchor:marker, options:{content: data}});
+		      }
+		  }
+	      }
+	  }
 	}
-    );
+    )
 };
 
 
