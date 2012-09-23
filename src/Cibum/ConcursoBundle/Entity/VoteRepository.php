@@ -3,6 +3,8 @@
 namespace Cibum\ConcursoBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Cibum\ConcursoBundle\Entity\Usuario;
+use Cibum\ConcursoBundle\Entity\Proyecto;
 
 /**
  * VoteRepository
@@ -12,4 +14,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class VoteRepository extends EntityRepository
 {
+    public function getVote(Usuario $user, Proyecto $project)
+    {
+        return $this->getEntityManager()->createQuery('SELECT v FROM CibumConcursoBundle:Vote v WHERE v.user = :user AND v.project = :project')
+            ->setParameter('user', $user)
+            ->setParameter('project', $project)
+            ->getOneOrNullResult();
+    }
+
+    public function getVotes(Proyecto $project, $up)
+    {
+        $ans = $this->getEntityManager()->createQuery('SELECT count(v) FROM CibumConcursoBundle:Vote v WHERE v.project = :project AND v.vote = :up')
+            ->setParameters(array('project' => $project, 'up' => $up))
+            ->getScalarResult();
+        return $ans[0][1];
+    }
 }

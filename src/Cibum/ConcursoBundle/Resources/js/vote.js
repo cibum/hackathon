@@ -13,7 +13,7 @@ $(function () {
             },
             success: function() {
                 $('#vote-btns button').removeClass('btn-primary');
-                $this.addClass('btn-primary')
+                $this.addClass('btn-primary');
             },
             error: function() {
 
