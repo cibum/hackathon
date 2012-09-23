@@ -3,6 +3,7 @@
 namespace Cibum\ConcursoBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Cibum\ConcursoBundle\Entity\Proyecto;
 
 /**
  * CommentRepository
@@ -12,4 +13,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class CommentRepository extends EntityRepository
 {
+   public function forProject(Proyecto $project)
+   {
+       return $this->getEntityManager()->createQuery('SELECT c FROM CibumConcursoBundle:Comment c WHERE c.project = :pj')
+           ->setParameter('pj', $project)
+           ->getResult();
+   }
 }

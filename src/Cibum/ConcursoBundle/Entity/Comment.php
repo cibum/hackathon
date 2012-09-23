@@ -4,6 +4,7 @@ namespace Cibum\ConcursoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Cibum\ConcursoBundle\Entity\Usuario;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Cibum\ConcursoBundle\Entity\Comment
@@ -47,9 +48,15 @@ class Comment
      * @var string $content
      *
      * @ORM\Column(name="content", type="text")
+     * @Assert\NotBlank
+     *
      */
     private $content;
 
+    function __construct()
+    {
+        $this->created = new \DateTime();
+    }
 
     /**
      * Get id
