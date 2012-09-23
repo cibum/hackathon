@@ -3,7 +3,7 @@
 {% block content %}
 
     <div class="span2">
-        <form action="{{ path('homepage') }}">
+        <form action="{{ path('homepage') }}" method="post">
             {{ form_widget(filter) }}
             <button type="submit">Enviar</button>
         </form>
