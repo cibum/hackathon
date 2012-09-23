@@ -32,7 +32,7 @@
                 points[i] = {
                     lat:prj.latitud,
                     lng:prj.longitud,
-                    data:'<h3>' + prj.nombre + '</h3>'
+                    data:'<strong>' + prj.nombre +   '</strong><br><a href="'+window.location.href+'/project/' + prj.id + '">Ver más</a>'
                 };
                 if (i == 100)
                     return false;
