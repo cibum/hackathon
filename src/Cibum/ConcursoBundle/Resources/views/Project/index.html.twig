@@ -2,6 +2,10 @@
 
 {% block content %}
 
+<script type="text/javascript">
+  var points = {{ proyectos |json_encode |raw }};
+</script>
+
     <div class="span3">
       <div class="alert alert-info">
         <strong>Importante:</strong> Los datos están
