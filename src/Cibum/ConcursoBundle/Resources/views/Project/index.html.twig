@@ -24,17 +24,18 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-        $(function () {
-            var data = {{ proyectos |json_encode |raw }};
-            var points = new Array();
+        var points;
+        $(document).ready(function () {
+            var data = $.parseJSON({{ proyectos |json_encode |raw }});
+            points = new Array();
             $.each(data, function (i, prj) {
-                /*
-                 points.push({
-                 lat:prj.latitud,
-                 lng:prj.longitud,
-                 data:'<h3>' + prj.nombre + '</h3>'
-                 });
-                 */
+                points[i] = {
+                    lat:prj.latitud,
+                    lng:prj.longitud,
+                    data:'<h3>' + prj.nombre + '</h3>'
+                };
+                if (i == 100)
+                    return false;
             });
         });
     </script>
