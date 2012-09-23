@@ -31,14 +31,14 @@ class Distrito
     /**
      * @var string $longitud
      *
-     * @ORM\Column(name="longitud", type="string", length=255)
+     * @ORM\Column(name="longitud", type="string", length=255, nullable=true)
      */
     private $longitud;
 
     /**
      * @var string $latitud
      *
-     * @ORM\Column(name="latitud", type="string", length=255)
+     * @ORM\Column(name="latitud", type="string", length=255, nullable=true)
      */
     private $latitud;
 
