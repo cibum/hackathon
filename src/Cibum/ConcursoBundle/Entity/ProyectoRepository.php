@@ -13,10 +13,28 @@ use Doctrine\ORM\EntityRepository;
 class ProyectoRepository extends EntityRepository
 {
 
+    /**
+     * returns the list of projects
+     *
+     * @param array $list
+     * @return array
+     */
     public function findNew(array $list)
     {
-        return $this->_em->createQuery('SELECT p FROM CibumConcursoBundle:Proyecto WHERE p.id IN :list')
+        return $this->_em->createQuery('SELECT p.snip FROM CibumConcursoBundle:Proyecto WHERE p.snip IN :list')
             ->setParameter('list', $list)
-            ->getResult();
+            ->getArrayResult();
+    }
+
+
+    /**
+     * Returns all snip codes in the db
+     *
+     * @return array
+     */
+    public function getAllSnips()
+    {
+        return $this->_em->createQuery('SELECT p.snip FROM CibumConcursoBundle:Proyecto')
+            ->getArrayResult();
     }
 }

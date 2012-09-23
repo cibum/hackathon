@@ -168,6 +168,11 @@ class Anual
         $this->distritos = $distritos;
     }
 
+    public function addDistrito(Distrito $distrito)
+    {
+        $this->distritos[] = $distrito;
+    }
+
     /**
      * Get distrito
      *
