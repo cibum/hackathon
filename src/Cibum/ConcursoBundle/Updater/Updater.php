@@ -23,7 +23,8 @@ class Updater
         $socrata = new Socrata('https://opendata.socrata.com/api');
 
         //pull data
-        $data = $socrata->get('/views/h3ut-rsd9/rows.json', array('meta' => 'false'))['data'];
+        $data = $socrata->get('/views/h3ut-rsd9/rows.json', array('meta' => 'false'));
+        $data = $data['data'];
 
         $data = array_map(function ($item) {
             return array_map(function ($it) {
