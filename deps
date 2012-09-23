@@ -82,3 +82,7 @@
 [lessphp]
     git=https://github.com/leafo/lessphp.git
     version=v0.3.8
+
+[socrata]
+    git=https://github.com/socrata/socrata-php.git
+    target=socrata
