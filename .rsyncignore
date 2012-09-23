@@ -6,7 +6,6 @@ composer.phar
 resources
 doc
 cache/*
-bin
 logs/*
 web/less
 *~
@@ -14,4 +13,3 @@ vendor/bootstrap
 tests
 Tests
 .git
-

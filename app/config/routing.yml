@@ -1,3 +1,7 @@
+aboutus:
+    pattern:   /nosotros
+    defaults:  { _controller: CibumConcursoBundle:Default:index }
+
 CibumConcursoBundle:
     resource: "@CibumConcursoBundle/Controller/"
     type:     annotation

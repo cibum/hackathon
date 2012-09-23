@@ -54,5 +54,11 @@ vendors:
 build_bootstrap:
 	php vendor/bundles/Sensio/Bundle/DistributionBundle/Resources/bin/build_bootstrap.php
 
+prod:
+	ENV=prod make warmup -e
+	ENV=prod make assets -e
+	chown hackaton:www-data . -R
+	chmod g+w . -R
+
 devsync:
-	rsync --exclude-from=".rsyncignore" --copy-links --progress -vrae 'ssh -p 22' . root@176.31.133.25:~/hackaton --delete
+	rsync --exclude-from=".rsyncignore" --copy-links --progress -vrae 'ssh -p 22' . root@176.31.133.25:/home/hackaton/hackaton
