@@ -1,5 +1,5 @@
 parameters:
-    cibum.updater.class: Cibum\Updater\Updater
+    cibum.updater.class: Cibum\ConcursoBundle\Updater\Updater
 
 services:
     cibum.updater:
