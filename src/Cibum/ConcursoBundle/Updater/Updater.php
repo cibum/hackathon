@@ -25,6 +25,12 @@ class Updater
         //pull data
         $data = $socrata->get('/views/h3ut-rsd9/rows.json', array('meta' => 'false'))['data'];
 
+        $data = array_map(function ($item) {
+            return array_map(function ($it) {
+                return trim($it);
+            }, $item);
+        }, $data);
+
         $datasimple = array();
         foreach ($data as $row) {
             if ($row[11] != "")
@@ -36,12 +42,14 @@ class Updater
 
         $actualproj = $repo->getAllQuick();
 
-        $new = array_diff($datasimple, $actualproj);
+        $new = array_values(array_diff($datasimple, $actualproj));
 
         $datavalid = array();
         $i = 0;
+        $tam = count($new);
+
         foreach ($data as $row) {
-            if($i === count($new))
+            if ($i === $tam)
                 break;
             $pair = $row[8] . ':' . $row[11];
             if ($pair === $new[$i]) {
@@ -49,6 +57,8 @@ class Updater
                 $i++;
             }
         }
+
+        $updates = 0;
 
         foreach ($datavalid as $fila) {
 
@@ -61,6 +71,8 @@ class Updater
                 $project->setSiaf($fila[12]);
                 $project->setLatitud($fila[26]);
                 $project->setLongitud($fila[27]);
+
+                $updates++;
             }
 
             $anho = new Anual();
@@ -71,16 +83,18 @@ class Updater
             $anho->setPim((int)$fila[17]);
             $anho->setEjecucionAcumulada((float)$fila[22]);
             $anho->setAvance((float)$fila[23]);
+            $updates++;
 
             $distritos = explode($fila[14], ',');
 
             foreach ($distritos as $distrito) {
                 $distNombre = trim($distrito);
-                $distrito = $this->em->getRepository('CibumConcursoBundle:Distrito')->findBy(array('nombre' => $distNombre));
+                $distrito = $this->em->getRepository('CibumConcursoBundle:Distrito')->findOneBy(array('nombre' => $distNombre));
                 if (!$distrito) {
                     $distrito = new Distrito();
                     $distrito->setNombre($distNombre);
                     $this->em->persist($distrito);
+                    $updates++;
                 }
                 $anho->addDistrito($distrito);
             }
@@ -88,9 +102,10 @@ class Updater
 
             $project->addAnual($anho);
             $this->em->persist($project);
+            $this->em->flush();
         }
 
-        $this->em->flush();
+        return $updates;
     }
 
     public function updateOne($project)
