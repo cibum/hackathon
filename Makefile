@@ -53,3 +53,7 @@ vendors:
 
 build_bootstrap:
 	php vendor/bundles/Sensio/Bundle/DistributionBundle/Resources/bin/build_bootstrap.php
+
+devsync:
+	make prodcache
+	rsync --exclude-from=".rsyncignore" --copy-links --progress -vrae 'ssh -p 22' . root@176.31.133.25:~/ --delete
