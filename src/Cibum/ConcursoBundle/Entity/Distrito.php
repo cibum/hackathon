@@ -3,6 +3,7 @@
 namespace Cibum\ConcursoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Cibum\ConcursoBundle\Entity\Distrito
@@ -49,6 +50,10 @@ class Distrito
      */
     private $anuales;
 
+    function __construct()
+    {
+        $this->anuales = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -128,6 +133,16 @@ class Distrito
     public function setAnuales($anuales)
     {
         $this->anuales = $anuales;
+    }
+
+    /**
+     * Add an anual project budget
+     *
+     * @param Anual $anual
+     */
+    public function addAnual(Anual $anual)
+    {
+        $this->anuales[] = $anual;
     }
 
     /**

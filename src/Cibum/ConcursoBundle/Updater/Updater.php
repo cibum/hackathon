@@ -23,7 +23,8 @@ class Updater
         $socrata = new Socrata('https://opendata.socrata.com/api');
 
         //pull data
-        $data = $socrata->get('/views/h3ut-rsd9/rows.json', array('meta' => 'false'))['data'];
+        $data = $socrata->get('/views/h3ut-rsd9/rows.json', array('meta' => 'false'));
+        $data = $data['data'];
 
         $data = array_map(function ($item) {
             return array_map(function ($it) {
@@ -60,6 +61,7 @@ class Updater
 
         $updates = 0;
 
+        $cacheddistritos = array();
         foreach ($datavalid as $fila) {
 
             $project = $repo->findOneBy(array('snip' => $fila[11]));
@@ -85,18 +87,25 @@ class Updater
             $anho->setAvance((float)$fila[23]);
             $updates++;
 
-            $distritos = explode($fila[14], ',');
+            $distritos = explode(',', $fila[14]);
 
             foreach ($distritos as $distrito) {
+                $distritoObj = null;
                 $distNombre = trim($distrito);
-                $distrito = $this->em->getRepository('CibumConcursoBundle:Distrito')->findOneBy(array('nombre' => $distNombre));
-                if (!$distrito) {
-                    $distrito = new Distrito();
-                    $distrito->setNombre($distNombre);
-                    $this->em->persist($distrito);
-                    $updates++;
+                if (isset($cacheddistritos[$distrito])) {
+                    $distritoObj = $cacheddistritos[$distrito];
+                } else {
+                    $distritoObj = $this->em->getRepository('CibumConcursoBundle:Distrito')->findOneBy(array('nombre' => $distNombre));
+                    if (!$distritoObj) {
+                        $distritoObj = new Distrito();
+                        $distritoObj->setNombre($distNombre);
+                        $this->em->persist($distritoObj);
+                        $updates++;
+                    }
+                    $cacheddistritos[$distrito] = $distritoObj;
                 }
-                $anho->addDistrito($distrito);
+
+                $anho->addDistrito($distritoObj);
             }
             $this->em->persist($anho);
 
