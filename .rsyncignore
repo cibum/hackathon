@@ -9,13 +9,9 @@ cache/*
 bin
 logs/*
 web/less
-web/css/bootstrap*
 *~
 vendor/bootstrap
-app/config/parameters.ini
 tests
 Tests
-tests
 .git
-.swp
 
