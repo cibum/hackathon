@@ -40,4 +40,11 @@ class ProyectoRepository extends EntityRepository
             return $item[1];
         }, $ans);
     }
+
+    public function getBySnips($snips)
+    {
+        return $this->getEntityManager()->createQuery('SELECT p FROM CibumConcursoBundle:Proyecto p WHERE p.snip IN :snips')
+        ->setParameter('snips', $snips)
+        ->getResult();
+    }
 }
