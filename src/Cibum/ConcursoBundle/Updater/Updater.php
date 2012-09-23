@@ -39,9 +39,11 @@ class Updater
         $new = array_diff($datasimple, $actualproj);
 
         $datavalid = array();
-        $i = 0;
+        $i = 1;
+        $tam = count($new);
+
         foreach ($data as $row) {
-            if($i === count($new))
+            if ($i > $tam)
                 break;
             $pair = $row[8] . ':' . $row[11];
             if ($pair === $new[$i]) {
@@ -76,7 +78,7 @@ class Updater
 
             foreach ($distritos as $distrito) {
                 $distNombre = trim($distrito);
-                $distrito = $this->em->getRepository('CibumConcursoBundle:Distrito')->findBy(array('nombre' => $distNombre));
+                $distrito = $this->em->getRepository('CibumConcursoBundle:Distrito')->findOneBy(array('nombre' => $distNombre));
                 if (!$distrito) {
                     $distrito = new Distrito();
                     $distrito->setNombre($distNombre);
@@ -88,9 +90,9 @@ class Updater
 
             $project->addAnual($anho);
             $this->em->persist($project);
+            $this->em->flush();
         }
 
-        $this->em->flush();
     }
 
     public function updateOne($project)
