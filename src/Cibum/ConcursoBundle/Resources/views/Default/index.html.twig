@@ -1,3 +1,38 @@
-<body>
-Hello {{ name }}!
-</body>
+{% extends 'CibumConcursoBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="offset4 span4">
+
+            <h2>Por que Cibum</h2>
+
+            <p>
+                Esta es una forma de acercar a los pobladores a la información acerca del crecimiento de su ciudad,
+                observando,
+                comentando y valorando los distintos proyectos que se realizan en su ciudad.
+            </p>
+
+            <p>
+                El nombre es en honor al café donde nos reunimos todo el equipo por primera vez.<br />
+                Una mención al Hotel Santa Catalina que nos dejo usar una habitación para la jornada de 2 dias.
+            </p>
+
+            <h2>Equipo Cibum</h2>
+
+            <dl class="team">
+                <dt>Karla Arias</dt>
+                <dd>Estudiante Ciencia de la Computación UCSP</dd>
+                <dt>Aldo Culquicondor</dt>
+                <dd>Estudiante Ciencia de la Computación UCSP</dd>
+                <dt>Rudy Godoy</dt>
+                <dd>Estudiante Ciencia de la Computación UCSP</dd>
+                <dt>Ernesto Vargas</dt>
+                <dd>Estudiante Ciencia de la Computación UCSP</dd>
+                <dt>Carlos Zuñiga</dt>
+                <dd>administrador de empresas</dd>
+            </dl>
+
+        </div>
+    </div>
+{% endblock %}
+
