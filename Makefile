@@ -55,6 +55,7 @@ build_bootstrap:
 	php vendor/bundles/Sensio/Bundle/DistributionBundle/Resources/bin/build_bootstrap.php
 
 prod:
+	rm -rf app/cache/*
 	ENV=prod make warmup -e
 	ENV=prod make assets -e
 	chown hackaton:www-data . -R

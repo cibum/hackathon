@@ -1,6 +1,7 @@
 *.sql
 .gitignore
 .rsyncignore
+parameters.ini
 exclude.lst
 composer.phar
 resources
