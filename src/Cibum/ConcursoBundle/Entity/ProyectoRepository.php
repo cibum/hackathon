@@ -21,7 +21,7 @@ class ProyectoRepository extends EntityRepository
      */
     public function findNew(array $list)
     {
-        return $this->_em->createQuery('SELECT p.snip FROM CibumConcursoBundle:Proyecto WHERE p.snip IN :list')
+        return $this->getEntityManager()->createQuery('SELECT p.snip FROM CibumConcursoBundle:Proyecto p WHERE p.snip IN :list')
             ->setParameter('list', $list)
             ->getArrayResult();
     }
@@ -32,9 +32,12 @@ class ProyectoRepository extends EntityRepository
      *
      * @return array
      */
-    public function getAllSnips()
+    public function getAllQuick()
     {
-        return $this->_em->createQuery('SELECT p.snip FROM CibumConcursoBundle:Proyecto')
+        $ans = $this->getEntityManager()->createQuery("SELECT CONCAT(CONCAT(a.anho, ':'), p.snip) FROM CibumConcursoBundle:Proyecto p JOIN p.anuales a")
             ->getArrayResult();
+        return array_map(function ($item) {
+            return $item[1];
+        }, $ans);
     }
 }

@@ -210,12 +210,17 @@ class Proyecto
      */
     public function setAnuales($anuales)
     {
-        $this->anuales = $anuales;
+        $this->anuales = array();
+
+        foreach($anuales as $anual) {
+            $this->addAnual($anual);
+        }
     }
 
     public function addAnual(Anual $anual)
     {
         $this->anuales[] = $anual;
+        $anual->setProyecto($this);
     }
 
     /**

@@ -38,7 +38,7 @@ class Anual
     /**
      * @var integer $estado
      *
-     * @ORM\Column(name="estado", type="integer")
+     * @ORM\Column(name="estado", type="string", length=30)
      */
     private $estado;
 
@@ -57,7 +57,6 @@ class Anual
      */
     private $presupuesto;
 
-
     /**
      * @var integer $pia
      *
@@ -75,14 +74,14 @@ class Anual
     /**
      * @var integer $ejecucion_acumulada
      *
-     * @ORM\Column(name="ejecucion_acumulada", type="integer")
+     * @ORM\Column(name="ejecucion_acumulada", type="float")
      */
     private $ejecucion_acumulada;
 
     /**
      * @var integer $avance
      *
-     * @ORM\Column(name="avance", type="integer")
+     * @ORM\Column(name="avance", type="float")
      */
     private $avance;
 
@@ -141,7 +140,7 @@ class Anual
     /**
      * Set estado
      *
-     * @param integer $estado
+     * @param string $estado
      */
     public function setEstado($estado)
     {
@@ -266,7 +265,7 @@ class Anual
     /**
      * Set avance
      *
-     * @param integer $avance
+     * @param float $avance
      */
     public function setAvance($avance)
     {
@@ -276,7 +275,7 @@ class Anual
     /**
      * Get avance
      *
-     * @return integer
+     * @return float
      */
     public function getAvance()
     {
