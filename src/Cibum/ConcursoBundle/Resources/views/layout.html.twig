@@ -2,7 +2,8 @@
 
 {% block stylesheets %}
     {% stylesheets
-    '@CibumConcursoBundle/Resources/public/css/*' %}
+    '@CibumConcursoBundle/Resources/public/css/*'
+    '@CibumConcursoBundle/Resources/public/css/main.css' %}
     <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen"/>
     {% endstylesheets %}
 {% endblock %}
@@ -40,17 +41,23 @@
                         <li><a href="#contact">Sobre Nosotros</a></li>
                     </ul>
 
-                    <div class="btn-group pull-right">
-                        <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
-                            <i class="icon-user"></i> Mi cuenta
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a tabindex="-1" href="#">Mis favoritos</a></li>
-                            <li class="divider"></li>
-                            <li><a tabindex="-1" href="#">Salir</a></li>
+                    {% if is_granted('ROLE_USER') %}
+                        <div class="btn-group pull-right">
+                            <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-user"></i> Mi cuenta
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a tabindex="-1" href="#">Mis favoritos</a></li>
+                                <li class="divider"></li>
+                                <li><a tabindex="-1" href="#">Salir</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <ul class="nav pull-right">
+                            <li><a href="{{ path('fos_user_security_login') }}">Inicio</a></li>
                         </ul>
-                    </div>
+                    {% endif %}
                 </div>
                 <!--/.nav-collapse -->
             </div>
