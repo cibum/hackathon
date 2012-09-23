@@ -6,17 +6,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-class DefaultController extends Controller
+/**
+ * @Route("/admin/proyectos")
+ */
+class ProyectoController extends Controller
 {
     /**
-     * @Route("/hello/{name}")
+     * @Route("/")
      * @Template()
      */
     public function indexAction($name)
     {
-        $updater = $this->get('cibum.updater');
-        $updater->update();
-
-        return array('name' => $name);
+        $em = $this->getDoctrine();
+        return array();
     }
 }
