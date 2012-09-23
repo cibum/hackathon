@@ -2,15 +2,15 @@
 
 {% block content %}
 
-    <div class="span2">
+    <div class="span3">
         <form action="{{ path('homepage') }}" method="post">
             {{ form_widget(filter) }}
             <button type="submit">Enviar</button>
         </form>
     </div>
 
-    <div class="span10">
-        <div id="map"></div>
+    <div class="span9">
+        <div id="map" style="width: 800px; height: 500px;"> </div>
     </div>
 
 {% endblock %}
