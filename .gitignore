@@ -20,4 +20,5 @@ app/config/parameters.yml
 .idea
 
 *.swp
+*.orig
 *~
