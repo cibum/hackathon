@@ -25,6 +25,12 @@ class Updater
         //pull data
         $data = $socrata->get('/views/h3ut-rsd9/rows.json', array('meta' => 'false'))['data'];
 
+        $data = array_map(function ($item) {
+            return array_map(function ($it) {
+                return trim($it);
+            }, $item);
+        }, $data);
+
         $datasimple = array();
         foreach ($data as $row) {
             if ($row[11] != "")
@@ -36,14 +42,15 @@ class Updater
 
         $actualproj = $repo->getAllQuick();
 
-        $new = array_diff($datasimple, $actualproj);
+        $new = array_values(array_diff($datasimple, $actualproj));
 
         $datavalid = array();
-        $i = 1;
+        $i = 0;
         $tam = count($new);
+        \Doctrine\Common\Util\Debug::dump($new);
 
         foreach ($data as $row) {
-            if ($i > $tam)
+            if ($i === $tam)
                 break;
             $pair = $row[8] . ':' . $row[11];
             if ($pair === $new[$i]) {
