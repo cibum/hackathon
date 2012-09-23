@@ -34,7 +34,10 @@ class ProyectoRepository extends EntityRepository
      */
     public function getAllQuick()
     {
-        return $this->getEntityManager()->createQuery("SELECT CONCAT(CONCAT(p.snip, ':'), a.anho) FROM CibumConcursoBundle:Proyecto p JOIN p.anuales a")
+        $ans = $this->getEntityManager()->createQuery("SELECT CONCAT(CONCAT(a.anho, ':'), p.snip) FROM CibumConcursoBundle:Proyecto p JOIN p.anuales a")
             ->getArrayResult();
+        return array_map(function ($item) {
+            return $item[1];
+        }, $ans);
     }
 }

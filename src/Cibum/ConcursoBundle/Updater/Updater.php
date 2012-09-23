@@ -35,20 +35,20 @@ class Updater
         $repo = $this->em->getRepository('CibumConcursoBundle:Proyecto');
 
         $actualproj = $repo->getAllQuick();
+
         $new = array_diff($datasimple, $actualproj);
 
         $datavalid = array();
         $i = 0;
         foreach ($data as $row) {
+            if($i === count($new))
+                break;
             $pair = $row[8] . ':' . $row[11];
             if ($pair === $new[$i]) {
                 $datavalid[] = $row;
                 $i++;
             }
         }
-
-        //\Doctrine\Common\Util\Debug::dump($datavalid, 5);
-        //die;
 
         foreach ($datavalid as $fila) {
 
