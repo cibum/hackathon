@@ -40,4 +40,9 @@ class ProyectoRepository extends EntityRepository
             return $item[1];
         }, $ans);
     }
+
+    public function findByFilter(array $criteria)
+    {
+    }
+
 }

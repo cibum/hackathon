@@ -5,7 +5,7 @@ namespace Cibum\ConcursoBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Cibum\ConcursoBundle\Entity\Proyecto;
+use Cibum\ConcursoBundle\Form\FilterForm;
 
 class ProjectController extends Controller
 {
@@ -15,20 +15,42 @@ class ProjectController extends Controller
      */
     public function indexAction()
     {
-        return array();
+        $request = $this->getRequest();
+        $session = $request->getSession();
+
+        $filter = $session->get('project_filter', array());
+
+        $filter_form = $this->createForm(new FilterForm(), $filter);
+
+        $filter_form->bindRequest($request);
+
+        if ($filter_form->isValid()) {
+            $session->set('project_filter', $filter);
+        }
+
+        $proyectos = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Proyecto')->findByFilter($filter);
+
+        return array(
+            'proyectos' => $proyectos,
+            'filter'    => $filter_form->createView(),
+        );
     }
 
     /**
-     * @Route("/project/1", name="project_show")
+     * @Route("/project/{proyecto}", name="project_show")
      * @Template()
      */
-    public function showAction()
+    public function showAction($proyecto)
     {
-       $project =new Proyecto();
-       $project->setNombre("jjujujuju");
-       
-        return array('proyecto' => $project );
+        $proyecto = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Proyecto')->findOneBy(array(
+            'id' => $proyecto,
+        ));
+
+        if (!$proyecto)
+            return $this->createNotFoundException();
+
+        return array('proyecto' => $proyecto);
     }
-    
-    
+
+
 }

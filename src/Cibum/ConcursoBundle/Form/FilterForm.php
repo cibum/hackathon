@@ -9,7 +9,21 @@ class FilterForm extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder->add('district', '');
+        $builder
+            ->add('distrito', 'entity', array(
+            'label' => 'Distrito',
+            'class' => 'Cibum\ConcursoBundle\Entity\Distrito',
+            'property' => 'nombre',
+            'required' => false,
+        ))
+            ->add('anho', 'choice', array(
+            'label' => "Año",
+            'choices' => array(
+                '2011', '2012'
+            )
+        ))
+
+        ;
     }
 
     public function getName()
