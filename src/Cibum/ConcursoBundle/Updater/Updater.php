@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use Cibum\ConcursoBundle\Entity\Proyecto;
 use Cibum\ConcursoBundle\Entity\ProyectoRepository;
 use Cibum\ConcursoBundle\Entity\Anual;
+use Cibum\ConcursoBundle\Entity\Distrito;
 use Socrata;
 
 class Updater
@@ -49,29 +50,46 @@ class Updater
         //\Doctrine\Common\Util\Debug::dump($datavalid, 5);
         //die;
 
-        foreach ($new as $each) {
-            // obtener cada proyecto
-            $fila = array();
+        foreach ($datavalid as $fila) {
 
-            $proyecto = new Proyecto();
-            $proyecto->setNombre($fila[0]->getNombre());
-            $proyecto->setDescripcion($fila[0]->getDescripcion());
-            $proyecto->setSnip($fila[0]->getSnip());
-
-
-            foreach ($fila as $anual) {
-                $anho = new Anual();
-                $anho->setAnho($anual->getAnho());
-                $anho->setAvance($anual->getAvance());
-
-                foreach ($anho->getDistritos() as $distrito) {
-                    $distrito = $this->em->getRepository('CibumConcursoBundle:Distrito')->findBy(array('nombre' => $distrito));
-                    $anho->addDistrito($distrito);
-                }
-
-                $proyecto->addAnual($anho);
+            $project = $repo->findOneBy(array('snip' => $fila[11]));
+            if (!$project) {
+                $project = new Proyecto();
+                $project->setNombre($fila[9]);
+                $project->setDescripcion($fila[10]);
+                $project->setSnip($fila[11]);
+                $project->setSiaf($fila[12]);
+                $project->setLatitud($fila[26]);
+                $project->setLongitud($fila[27]);
             }
+
+            $anho = new Anual();
+            $anho->setAnho($fila[8]);
+            $anho->setEstado($fila[13]);
+            $anho->setPresupuesto((int)$fila[15]);
+            $anho->setPia((int)$fila[16]);
+            $anho->setPim((int)$fila[22]);
+            $anho->setEjecucionAcumulada((float)$fila[23]);
+
+            $distritos = explode($fila[14], ',');
+
+            foreach ($distritos as $distrito) {
+                $distNombre = trim($distrito);
+                $distrito = $this->em->getRepository('CibumConcursoBundle:Distrito')->findBy(array('nombre' => $distNombre));
+                if (!$distrito) {
+                    $distrito = new Distrito();
+                    $distrito->setNombre($distNombre);
+                    $this->em->persist($distrito);
+                }
+                $anho->addDistrito($distrito);
+            }
+            $this->em->persist($anho);
+
+            $project->addAnual($anho);
+            $this->em->persist($project);
         }
+
+        $this->em->flush();
     }
 
     public function updateOne($project)
