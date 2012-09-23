@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Cibum\ConcursoBundle\Entity\VoteRepository")
- * @ORM\Table(name="vote",uniqueConstraints={@ORM\UniqueConstraint(name="vote_idx", columns={"user", "project"})})
+ * @ORM\Table(name="vote",uniqueConstraints={@ORM\UniqueConstraint(name="vote_idx", columns={"user_id", "project_id"})})
  */
 class Vote
 {
