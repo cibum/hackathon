@@ -19,7 +19,8 @@ class FilterForm extends AbstractType
             ->add('anho', 'choice', array(
             'label' => "Año",
             'choices' => array(
-                '2012', '2011'
+                '2012' => '2012',
+                '2011' => '2011',
             ),
             'required' => true
         ))

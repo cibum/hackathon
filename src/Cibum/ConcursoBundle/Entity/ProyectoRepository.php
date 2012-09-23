@@ -3,6 +3,7 @@
 namespace Cibum\ConcursoBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Cibum\ConcursoBundle\Entity\Distrito;
 
 /**
  * ProyectoRepository
@@ -41,20 +42,14 @@ class ProyectoRepository extends EntityRepository
         }, $ans);
     }
 
-    public function findByFilter(array $criteria)
+    public function findByFilter(Distrito $distrito, $anho)
     {
-        $qb = $this->createQueryBuilder('p');
-        if ($criteria) {
-            $qb->join('p.anuales', 'a');
-            !isset($criteria['distrito']) ? : $qb
-                ->join('a.distritos', 'd')
-                ->where('d.id = :distrito')
-                ->setParameter('distrito', $criteria['distrito']);
-            !isset($criteria['anho']) ? : $qb
-                ->andWhere('a.anho = :anho')
-                ->setParameter('anho', $criteria['anho']);
-        }
-        return $qb->getQuery()->getResult();
+        return $this->getEntityManager()
+            ->createQuery('SELECT p.id, p.nombre, p.latitud, p.longitud FROM CibumConcursoBundle:Anual a JOIN a.proyecto p WHERE :distrito MEMBER OF a.distritos AND a.anho = :anho')
+            ->setParameters(array(
+            'anho' => $anho,
+            'distrito' => $distrito,
+        ))->getArrayResult();
     }
 
     public function getBySnips($snips)

@@ -23,7 +23,6 @@ class ProjectController extends Controller
         $request = $this->getRequest();
         $session = $request->getSession();
 
-//        $filter = $session->get('project_filter', array());
         $filter = array();
 
         $filter_form = $this->createForm(new FilterForm(), $filter);
@@ -33,11 +32,11 @@ class ProjectController extends Controller
 
             if ($filter_form->isValid()) {
                 $filter = $filter_form->getData();
-                $session->set('project_filter', $filter);
             }
         }
 
-        $proyectos = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Proyecto')->findByFilter($filter);
+        $proyectos = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Proyecto')
+            ->findByFilter($filter['distrito'], $filter['anho']);
 
         return array(
             'proyectos' => $proyectos,
