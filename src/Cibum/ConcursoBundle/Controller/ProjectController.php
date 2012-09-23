@@ -9,6 +9,8 @@ use Cibum\ConcursoBundle\Form\FilterForm;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Cibum\ConcursoBundle\Entity\Vote;
+use Cibum\ConcursoBundle\Entity\Comment;
+use Cibum\ConcursoBundle\Form\CommentType;
 
 class ProjectController extends Controller
 {
@@ -53,10 +55,66 @@ class ProjectController extends Controller
             'id' => $proyecto,
         ));
 
-        if (!$proyecto)
+        if (!$proyecto) {
             return $this->createNotFoundException();
+        }
 
-        return array('proyecto' => $proyecto);
+        $comment = new \Cibum\ConcursoBundle\Entity\Comment();
+        $commentForm = $this->createForm(new CommentType(), $comment);
+
+        $comments = $this->getDoctrine()->getRepository('CibumConcursoBundle:Comment')->forProject($proyecto);
+
+        return array(
+            'proyecto' => $proyecto,
+            'comments' => $comments,
+            'commentForm' => $commentForm->createView(),
+
+        );
+    }
+
+    /**
+     * @Route("/project/{proyecto}/comment", name="project_comment")
+     * @Template("CibumConcursoBundle:Project:show.html.twig")
+     * @Method("POST")
+     */
+    public function commentAction($proyecto)
+    {
+        $proyecto = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Proyecto')->findOneBy(array(
+            'id' => $proyecto,
+        ));
+        /** @var Proyecto $proyecto */
+        if (!$proyecto) {
+            return $this->createNotFoundException();
+        }
+
+        $comment = new \Cibum\ConcursoBundle\Entity\Comment();
+        $commentForm = $this->createForm(new CommentType(), $comment);
+
+        $request = $this->getRequest();
+        $commentForm->bindRequest($request);
+
+        if ($commentForm->isValid()) {
+            $user = $this->get('security.context')->getToken()->getUser();
+            if ($user instanceof \Symfony\Component\Security\Core\User\UserInterface) {
+                $comment->setUser($user);
+                $comment->setProject($proyecto);
+
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($comment);
+                $em->flush();
+                $request->getSession()->setFlash('success', 'Comentario enviado con éxito');
+                return $this->redirect($this->generateUrl('project_show', array('proyecto' => $proyecto->getId())));
+            }
+            $request->getSession()->setFlash('warning', 'Usuario no registrado');
+        }
+
+        $comments = $this->getDoctrine()->getRepository('CibumConcursoBundle:Comment')->forProject($proyecto);
+
+        return array(
+            'proyecto' => $proyecto,
+            'comments' => $comments,
+            'commentForm' => $commentForm->createView(),
+        );
     }
 
     /**

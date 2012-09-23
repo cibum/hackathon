@@ -1,0 +1,9 @@
+<h2>Comentarios</h2>
+<ul class="comments">
+    {% for comment in comments %}
+        <li><strong>{{ comment.user.username }}</strong>
+            <small data-date="{{ comment.created|date('c') }}">{{ comment.created|date('d/m/Y h:i a') }}</small>
+            <p>{{ comment.content }}</p>
+        </li>
+    {% endfor %}
+</ul>

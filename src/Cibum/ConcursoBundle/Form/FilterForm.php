@@ -21,7 +21,7 @@ class FilterForm extends AbstractType
             'choices' => array(
                 '2012', '2011'
             ),
-            'required' => false
+            'required' => true
         ))
 
         ;

@@ -44,7 +44,20 @@
                 </div>
             </div>
         </div>
-        <div class="span5">Comentarios</div>
+        <div class="span5">
+            {% if is_granted('ROLE_USER') %}
+            <h2>Envia un comentario</h2>
+            <form action="{{ path('project_comment', {proyecto:proyecto.id}) }}" method="post" {{ form_enctype(commentForm) }}>
+                {{ form_widget(commentForm) }}
+                <p>
+                    <button class="btn" type="submit">Enviar</button>
+                </p>
+            </form>
+            {%  endif %}
+            <div>
+                {% include 'CibumConcursoBundle:Comments:thread.html.twig' %}
+            </div>
+        </div>
     </div>
 
 {% endblock %}
