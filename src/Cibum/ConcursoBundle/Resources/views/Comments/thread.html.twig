@@ -5,5 +5,7 @@
             <small data-date="{{ comment.created|date('c') }}">{{ comment.created|date('d/m/Y h:i a') }}</small>
             <p>{{ comment.content }}</p>
         </li>
+    {%  else %}
+        <li>Aún no hay comentarios. Se el primero en comentar!</li>
     {% endfor %}
 </ul>
