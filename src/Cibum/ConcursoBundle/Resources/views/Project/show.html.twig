@@ -12,7 +12,14 @@
                         <dt>Descripción</dt>
                         <dd>{{ proyecto.descripcion }}</dd>
                         <dt>Código SNIP</dt>
-                        <dd id="snip">{{ proyecto.snip }}</dd>
+                        <dd><span id="snip"> {{ proyecto.snip }}</span>
+                            <a href="http://ofi.mef.gob.pe/bp/ConsultarPIP/frmConsultarPIP.asp?accion=consultar&txtCodigo={{ proyecto.snip }}"
+                               target="_blank" class="btn btn-info">
+                                Ver más
+                            </a>
+
+                        </dd>
+                        </form>
                         <dt>Código SIAF</dt>
                         <dd>{{ proyecto.siaf }}</dd>
                     </dl>
@@ -43,22 +50,23 @@
         </div>
         <div class="span5">
             {% if is_granted('ROLE_USER') %}
-            <h2>Envia un comentario</h2>
-            <form action="{{ path('project_comment', {proyecto:proyecto.id}) }}" method="post" {{ form_enctype(commentForm) }}>
-                {{ form_widget(commentForm) }}
-                <p>
-                    <button class="btn" type="submit">Enviar</button>
-                </p>
-            </form>
-            {%  endif %}
+                <h2>Envia un comentario</h2>
+                <form action="{{ path('project_comment', {proyecto:proyecto.id}) }}"
+                      method="post" {{ form_enctype(commentForm) }}>
+                    {{ form_widget(commentForm) }}
+                    <p>
+                        <button class="btn" type="submit">Enviar</button>
+                    </p>
+                </form>
+            {% endif %}
             <div>
                 {% include 'CibumConcursoBundle:Comments:thread.html.twig' %}
             </div>
         </div>
     </div>
-    
-    
-    
+
+
+
 
 {% endblock %}
 
