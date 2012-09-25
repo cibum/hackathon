@@ -1,11 +1,20 @@
 <h2>Comentarios</h2>
 <ul class="comments">
-    {% for comment in comments %}
-        <li><strong>{{ comment.user.username }}</strong>
-            <small data-date="{{ comment.created|date('c') }}">{{ comment.created|date('d/m/Y h:i a') }}</small>
-            <p>{{ comment.content }}</p>
-        </li>
-    {%  else %}
-        <li>Aún no hay comentarios. Se el primero en comentar!</li>
-    {% endfor %}
+    <table class="table">
+        {% for comment in comments %}
+        <tr>
+            <td>
+                <strong>{{ comment.user.username }}</strong>
+                <small data-date="{{ comment.created|date('c') }}">{{ comment.created|date('d/m/Y h:i a') }}</small>
+                <p>{{ comment.content }}</p>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td>
+                <li>Aún no hay comentarios. Se el primero en comentar!</li>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 </ul>
