@@ -19,6 +19,7 @@
     '@CibumConcursoBundle/Resources/js/vote.js'
     '../vendor/bootstrap/js/bootstrap-dropdown.js'
     '../vendor/bootstrap/js/bootstrap-collapse.js'
+    '../vendor/bootstrap/js/bootstrap-alert.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -67,6 +68,16 @@
     </div>
 
     <div class="container-fluid">
+        {% block flashes %}
+            {% for key, message in app.session.getFlashes() %}
+                <div class="alert alert-{{ key }}">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>{{ key|capitalize }}</strong>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endblock %}
+
         {% block content %}
         {% endblock %}
     </div>
