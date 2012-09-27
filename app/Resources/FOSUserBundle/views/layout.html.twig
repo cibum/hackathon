@@ -1,0 +1,17 @@
+{% extends 'CibumConcursoBundle::layout.html.twig' %}
+
+{% block flashes %}
+    {{ parent() }}
+    {% for key, message in app.session.getFlashes() %}
+        <div class="alert alert-{{ key }}">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{ key|capitalize }}</strong>
+            {{ message|trans({}, 'FOSUserBundle') }}
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+    {% block fos_user_content %}
+    {% endblock fos_user_content %}
+{% endblock %}

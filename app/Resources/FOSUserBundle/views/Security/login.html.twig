@@ -1,8 +1,12 @@
-{% extends "CibumConcursoBundle::layout.html.twig" %}
+{% extends "FOSUserBundle::layout.html.twig" %}
 
-{% block content %}
+{% block fos_user_content %}
 {% if error %}
-    <div>{{ error|trans({}, 'FOSUserBundle') }}</div>
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>Error</strong>
+        {{ error|trans({}, 'FOSUserBundle') }}
+    </div>
 {% endif %}
 
 <form action="{{ path("fos_user_security_check") }}" method="post">
@@ -19,4 +23,4 @@
 
     <input class="btn btn-primary" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
 </form>
-{% endblock content %}
+{% endblock fos_user_content %}
