@@ -39,7 +39,7 @@ class ProjectController extends Controller
 
         if (!isset($filter['distrito'])) {
             $repodis = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Distrito');
-            $distrito = $repodis->findOneBy(array('nombre' => 'LIMA CERCADO'));
+            $distrito = $repodis->findOneBy(array('nombre' => 'LIMA'));
         } else {
             $distrito = $filter['distrito'];
         }
