@@ -45,6 +45,10 @@ class ProjectController extends Controller
         }
         $proyectos = $repo->findByFilter($distrito, isset($filter['anho'])?$filter['anho']:'2012');
 
+        foreach ($proyectos as $key => $proyecto) {
+            $proyectos[$key] = array_merge($proyecto, array('route' => $this->get('router')->generate('project_show', array('proyecto' => $proyecto['id']))));
+        }
+
         return array(
             'proyectos' => json_encode($proyectos),
             'filter' => $filter_form->createView(),
