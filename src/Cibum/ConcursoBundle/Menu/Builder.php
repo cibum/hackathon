@@ -35,7 +35,7 @@ class Builder extends ContainerAware
         if ($this->container->get('security.context')->isGranted('ROLE_USER')) {
             $menu->addChild('Salir', array('route' => 'fos_user_security_logout'));
         } else {
-            $menu->addChild('Regśtrate', array('route' => 'fos_user_registration_register'));
+            $menu->addChild('Regístrate', array('route' => 'fos_user_registration_register'));
             $menu->addChild('Ingresa', array('route' => 'fos_user_security_login'));
         }
 
