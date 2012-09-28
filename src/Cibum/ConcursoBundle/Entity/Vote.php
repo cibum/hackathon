@@ -27,14 +27,14 @@ class Vote
     /**
      * @var Usuario $user
      *
-     * @ORM\OneToOne(targetEntity="Cibum\ConcursoBundle\Entity\Usuario")
+     * @ORM\ManyToOne(targetEntity="Cibum\ConcursoBundle\Entity\Usuario")
      */
     private $user;
 
     /**
      * @var Proyecto $project
      *
-     * @ORM\OneToOne(targetEntity="Cibum\ConcursoBundle\Entity\Proyecto")
+     * @ORM\ManyToOne(targetEntity="Cibum\ConcursoBundle\Entity\Proyecto")
      */
     private $project;
 
