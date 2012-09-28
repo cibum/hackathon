@@ -6,3 +6,10 @@ body {
     font-size: 1.4em;
     line-height: 1.7em;
 }
+
+.comments li {
+    border-bottom: 1px solid #DCDCDC;
+    padding: 8px 0 8px 40px;
+    position: relative;
+    list-style-type: none;
+}

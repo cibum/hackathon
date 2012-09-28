@@ -13,10 +13,11 @@ use Cibum\ConcursoBundle\Entity\Proyecto;
  */
 class CommentRepository extends EntityRepository
 {
-   public function forProject(Proyecto $project)
-   {
-       return $this->getEntityManager()->createQuery('SELECT c FROM CibumConcursoBundle:Comment c WHERE c.project = :pj')
-           ->setParameter('pj', $project)
-           ->getResult();
-   }
+    public function forProject(Proyecto $project)
+    {
+        return $this->getEntityManager()
+            ->createQuery('SELECT c FROM CibumConcursoBundle:Comment c WHERE c.project = :pj ORDER BY c.created DESC')
+            ->setParameter('pj', $project)
+            ->getResult();
+    }
 }

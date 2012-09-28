@@ -43,7 +43,7 @@ class ProjectController extends Controller
         } else {
             $distrito = $filter['distrito'];
         }
-        $proyectos = $repo->findByFilter($distrito, isset($filter['anho'])?$filter['anho']:'2012');
+        $proyectos = $repo->findByFilter($distrito, isset($filter['anho']) ? $filter['anho'] : '2012');
 
         foreach ($proyectos as $key => $proyecto) {
             $proyectos[$key] = array_merge($proyecto, array('route' => $this->get('router')->generate('project_show', array('proyecto' => $proyecto['id']))));
@@ -132,10 +132,23 @@ class ProjectController extends Controller
 
         $comments = $this->getDoctrine()->getRepository('CibumConcursoBundle:Comment')->forProject($proyecto);
 
+        $votesrepo = $this->getDoctrine()->getRepository('CibumConcursoBundle:Vote');
+        $tsup = $votesrepo->getVotes($proyecto, true);
+        $tsdown = $votesrepo->getVotes($proyecto, false);
+        if ($tsup + $tsdown) {
+            $perup = (int)(100 * $tsup / ($tsup + $tsdown));
+            $perdown = 100 - $perup;
+        } else
+            $perup = $perdown = 0;
+
         return array(
             'proyecto' => $proyecto,
             'comments' => $comments,
             'commentForm' => $commentForm->createView(),
+            'tsup' => $tsup,
+            'tsdown' => $tsdown,
+            'perup' => $perup,
+            'perdown' => $perdown
         );
     }
 
@@ -148,10 +161,11 @@ class ProjectController extends Controller
         $request = $this->get('request');
         $proyecto = $request->request->get('project');
         $votevar = $request->request->get('vote');
-        ;
+
         $proyecto = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Proyecto')->findOneBy(array(
             'snip' => $proyecto
         ));
+        /** @var Proyecto $proyecto */
         if (!$proyecto)
             return $this->createNotFoundException();
 
