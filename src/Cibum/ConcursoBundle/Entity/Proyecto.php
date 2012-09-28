@@ -73,7 +73,7 @@ class Proyecto
     /**
      * @var Comment[] $comments
      *
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="proyecto")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="project")
      */
     protected $comments;
 
