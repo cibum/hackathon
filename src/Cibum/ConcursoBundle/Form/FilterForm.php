@@ -4,6 +4,7 @@ namespace Cibum\ConcursoBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
+use Doctrine\ORM\EntityRepository;
 
 class FilterForm extends AbstractType
 {
@@ -13,6 +14,10 @@ class FilterForm extends AbstractType
             ->add('distrito', 'entity', array(
             'label' => 'Distrito',
             'class' => 'Cibum\ConcursoBundle\Entity\Distrito',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('d')
+                    ->orderBy('d.nombre', 'ASC');
+            },
             'property' => 'nombre',
             'required' => false,
         ))
@@ -23,9 +28,7 @@ class FilterForm extends AbstractType
                 '2011' => '2011',
             ),
             'required' => true
-        ))
-
-        ;
+        ));
     }
 
     public function getName()
