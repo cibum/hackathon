@@ -40,27 +40,11 @@
                 <a class="brand" href="{{ path('homepage') }}">Cibum</a>
 
                 <div class="nav-collapse">
-                    <ul class="nav">
-                        <li class="active"><a href="{{ path('homepage') }}">Inicio</a></li>
-                        <li><a href="{{ path('aboutus') }}">Sobre Nosotros</a></li>
-                    </ul>
 
-                    {% if is_granted('ROLE_USER') %}
-                        <div class="btn-group pull-right">
-                            <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-user"></i> {{ app.user }}
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a tabindex="-1" href="{{ path('fos_user_security_logout') }}">Salir</a></li>
-                            </ul>
-                        </div>
-                    {% else %}
-                        <ul class="nav pull-right">
-                            <li><a href="{{ path('fos_user_registration_register') }}">Regístrate</a></li>
-                            <li><a href="{{ path('fos_user_security_login') }}">Ingresar</a></li>
-                        </ul>
-                    {% endif %}
+                    {{ knp_menu_render('CibumConcursoBundle:Builder:mainMenu', {'currentClass': 'active'}) }}
+
+                    {{ knp_menu_render('CibumConcursoBundle:Builder:userMenu', {'currentClass': 'active'}) }}
+
                 </div>
                 <!--/.nav-collapse -->
             </div>
