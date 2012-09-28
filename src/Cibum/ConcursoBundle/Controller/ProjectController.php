@@ -43,7 +43,7 @@ class ProjectController extends Controller
         } else {
             $distrito = $filter['distrito'];
         }
-        $proyectos = $repo->findByFilter($distrito, isset($filter['anho'])?$filter['anho']:'2012');
+        $proyectos = $repo->findByFilter($distrito, isset($filter['anho']) ? $filter['anho'] : '2012');
 
         return array(
             'proyectos' => json_encode($proyectos),
@@ -157,10 +157,11 @@ class ProjectController extends Controller
         $request = $this->get('request');
         $proyecto = $request->request->get('project');
         $votevar = $request->request->get('vote');
-        ;
+
         $proyecto = $this->getDoctrine()->getRepository('Cibum\ConcursoBundle\Entity\Proyecto')->findOneBy(array(
             'snip' => $proyecto
         ));
+        /** @var Proyecto $proyecto */
         if (!$proyecto)
             return $this->createNotFoundException();
 
