@@ -54,6 +54,7 @@
                 <form action="{{ path('project_comment', {proyecto:proyecto.id}) }}"
                       method="post" {{ form_enctype(commentForm) }}>
                     {{ form_widget(commentForm.content, { 'attr': {'class': 'span11'} }) }}
+                    {{ form_rest(commentForm) }}
                     <p>
                         <button class="btn" type="submit">Enviar</button>
                     </p>

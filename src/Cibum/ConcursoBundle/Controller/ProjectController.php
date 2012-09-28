@@ -128,10 +128,23 @@ class ProjectController extends Controller
 
         $comments = $this->getDoctrine()->getRepository('CibumConcursoBundle:Comment')->forProject($proyecto);
 
+        $votesrepo = $this->getDoctrine()->getRepository('CibumConcursoBundle:Vote');
+        $tsup = $votesrepo->getVotes($proyecto, true);
+        $tsdown = $votesrepo->getVotes($proyecto, false);
+        if ($tsup + $tsdown) {
+            $perup = (int)(100 * $tsup / ($tsup + $tsdown));
+            $perdown = 100 - $perup;
+        } else
+            $perup = $perdown = 0;
+
         return array(
             'proyecto' => $proyecto,
             'comments' => $comments,
             'commentForm' => $commentForm->createView(),
+            'tsup' => $tsup,
+            'tsdown' => $tsdown,
+            'perup' => $perup,
+            'perdown' => $perdown
         );
     }
 
