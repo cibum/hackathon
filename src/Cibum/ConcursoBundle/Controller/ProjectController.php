@@ -183,7 +183,22 @@ class ProjectController extends Controller
             $vote->setVote(!!$votevar);
             $em->persist($vote);
             $em->flush();
-            return new Response('Éxito', 200);
+
+            $votesrepo = $this->getDoctrine()->getRepository('CibumConcursoBundle:Vote');
+            $tsup = $votesrepo->getVotes($proyecto, true);
+            $tsdown = $votesrepo->getVotes($proyecto, false);
+            if ($tsup + $tsdown) {
+                $perup = (int)(100 * $tsup / ($tsup + $tsdown));
+                $perdown = 100 - $perup;
+            } else
+                $perup = $perdown = 0;
+            $response = array(
+                'tsup' => $tsup,
+                'tsdown' => $tsdown,
+                'perup' => $perup,
+                'perdown' => $perdown
+            );
+            return new Response(json_encode($response), 200, array('Content-type' => 'application/json'));
         }
         return new Response('Debe iniciar sesión para votar', 401);
     }
