@@ -4,7 +4,8 @@ function setPoints(points){
 	  markers: points, 
 	  marker:{
 	      options:{
-		  draggable: false
+		  draggable: false,
+		  icon: new google.maps.MarkerImage("../img/marker.png")
 	      },
 	      events:{
 		  click: function(marker, event, data){
@@ -38,14 +39,32 @@ $(function () {
         }
     );
 
-    $('#filter_distrito').change(function(){
-	var sel = $("#filter_distrito option:selected").text();
-	updateParams(sel.toLowerCase());
-    });
+    // Updates points and marks district
+    var sel = $("#filter_distrito option:selected").text();
+    updateParams(sel.toLowerCase());
 
-
+    // updates points display
     function updateParams(val){
 	var address_lima = val + ", Lima, Peru";
+
+	var ftLM = 5286944;
+	var cond = "NOMBDIST = '" + val.toUpperCase() + "'";
+	var dstLayer = new google.maps.FusionTablesLayer({
+	    query: {
+		select: 'geometry',
+		from: ftLM,
+		where: cond
+	    },
+	    styles: [
+		{
+		    polygonOptions: {
+			fillColor: "#ccff00"
+		    }
+		}
+	    ]
+	});
+
+
 	$('#map').gmap3(
 	    {
 		action:'getLatLng',
@@ -54,11 +73,10 @@ $(function () {
 		    if(result){
 			$(this).gmap3({
 			    action: 'setCenter',
-			    zoom: 17,
+			    zoom: 18,
 			    args: [ result[0].geometry.location ]
 			});
-		    } else {
-			alert('foo');
+			dstLayer.setMap($(this).gmap3('get'));
 		    }
 		}
 	    }
